@@ -1,0 +1,38 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+
+  vars:
+
+  tasks:
+    - name: 'Check mandatory variables are defined'
+      assert:
+        that:
+          - mailcow_hostname is defined
+          - mailcow_tz is defined
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+    - name: Clone Mailcow
+      git:
+        repo: 'https://github.com/mailcow/mailcow-dockerized'
+        dest: /opt/mailcow-dockerized
+    
+    - name: Check that mailcow.conf exists
+      stat:
+        path: /opt/mailcow-dockerized/mailcow.conf
+      register: mailcow_config
+
+    - name: Create the config file, if it doesnt exist already
+      command: bash -c "export MAILCOW_HOSTNAME={{ mailcow_hostname }} MAILCOW_TZ={{ mailcow_tz }} && cd /opt/mailcow-dockerized && ./generate_config.sh"
+      when: mailcow_config.stat.exists == False 
+
+    - name: Deploy
+      command: bash -c "cd /opt/mailcow-dockerized && docker-compose pull && docker-compose up -d"
+
+  roles:
+    - geerlingguy.docker
