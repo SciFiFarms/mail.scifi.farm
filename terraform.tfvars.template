@@ -1,0 +1,5 @@
+domain = "spencerslab.com"
+timezone = "America/Denver"
+mx_backup = "banshee.mxlogin.com"
+hcloud_token = "[YOUR Hetzner Cloud token here]"
+digitalocean_token = "[YOUR DigitalOcean token here]"
