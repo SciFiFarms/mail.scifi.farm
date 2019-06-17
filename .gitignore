@@ -1,0 +1,6 @@
+terraform
+*.tfvars
+.terraform/*
+
+# Maybe move state to S3 instead?
+terraform.tfstate*
