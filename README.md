@@ -22,7 +22,7 @@ Git
 ## Deploying Mailcow
 Once you've gathered the above, clone the repo and create your tarraform.tfvars file.
 ```
-git clone https://github.com/SciFiFarms/mail.scifi.farm.git mail
+git clone https://github.com/SciFiFarms/mail.spencerslab.com.git mail
 cd mail
 cp tarraform.tfvars.template tarraform.tfvars
 ```
