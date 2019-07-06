@@ -1,0 +1,12 @@
+---
+- include: directories.yml
+  tags: grav-install-directories
+
+
+- name: Install Dependencies with Composer
+  command: composer install
+  args:
+    chdir: "{{ www_root }}/{{ item.key }}/current/"
+  register: composer_results
+  with_dict: "{{ grav_sites }}"
+  changed_when: "'Nothing to install or update' not in composer_results.stderr"
