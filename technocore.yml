@@ -1,0 +1,52 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+
+  vars:
+
+  tasks:
+    #- name: 'Check mandatory variables are defined'
+    #  assert:
+    #    that:
+    #      - 
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+
+    - name: Clone TechnoCore
+      git:
+        repo: 'https://github.com/ScifiFarms/technocore'
+        dest: /opt/technocore
+        version: refactor
+
+    - name: Check that .env exists
+      stat:
+        path: /opt/technocore/.env
+      register: technocore_config
+
+    - name: Create the .env file, if it doesnt exist already
+      when: technocore_config.stat.exists == False 
+      copy:
+        src: .env
+        dest: /opt/technocore/.env
+
+    - name: Initialize the swarm
+      command: bash -c "docker swarm init"
+
+    - name: Deploy
+      command: bash -c "cd /opt/technocore && ./tc deploy"
+
+  roles:
+    - geerlingguy.docker
+    - dev-sec.os-hardening
+    #- atosatto.docker-swarm
+    #- thomasjpfan.docker-swarm
+    
+  vars:
+    sysctl_overwrite:
+      # Enable IPv4 traffic forwarding.
+      net.ipv4.ip_forward: 1

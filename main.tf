@@ -66,3 +66,37 @@ module "mail-domains" {
   #mx_backup = "${var.mx_backup}"
   ipv4_address = "${hcloud_server.mail.ipv4_address}"
 }
+
+
+### TechnoCore server
+# Create a server
+resource "hcloud_server" "cloud" {
+  name        = "cloud.${var.domain}"
+  image       = "debian-10"
+  server_type = "cx21"
+  location    = "hel1"
+  ssh_keys    = ["${hcloud_ssh_key.default.name}"]
+
+  provisioner "remote-exec" {
+    # Install Python for Ansible
+    inline = ["echo 'Ready for Ansible'"]
+
+    connection {
+      type        = "ssh"
+      user        = "root"
+      host = self.ipv4_address
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook -u root -i '${self.ipv4_address},' --private-key ${var.ssh_key_private} -T 300 technocore.yml" 
+  }
+}
+
+module "cloud-domains" {
+  source = "./modules/cloud-domains"
+  domain = "${var.domain}"
+  aliases = ["grav", "prometheus", "grafana", "traefik"]
+  #mx_backup = "${var.mx_backup}"
+  ipv4_address = "${hcloud_server.cloud.ipv4_address}"
+}
