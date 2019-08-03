@@ -38,7 +38,7 @@ resource "hcloud_volume" "mail_data" {
 # Create a server
 resource "hcloud_server" "mail" {
   name        = "mail.${var.domain}"
-  image       = "debian-9"
+  image       = "debian-10"
   server_type = "cx21"
   location    = "hel1"
   ssh_keys    = ["${hcloud_ssh_key.default.name}"]
