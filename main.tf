@@ -9,6 +9,11 @@ provider "digitalocean" {
   token = "${var.digitalocean_token}"
 }
 
+# Create a new domain
+resource "digitalocean_domain" "default" {
+  name = "${var.domain}"
+}
+
 #  Main ssh key
 resource "hcloud_ssh_key" "default" {
   name       = "main ssh key"
@@ -55,9 +60,9 @@ resource "hcloud_server" "mail" {
 }
 
 # TODO: Consider adding the needed DNS entries. 
-module "mail-spencerslab-com" {
-  source = "./modules/domain"
+module "mail-domains" {
+  source = "./modules/mail-domains"
   domain = "${var.domain}"
-  mx_backup = "${var.mx_backup}"
+  #mx_backup = "${var.mx_backup}"
   ipv4_address = "${hcloud_server.mail.ipv4_address}"
 }
