@@ -1,4 +1,0 @@
----
-- name: Checking that required variables are set
-  fail: msg="CONFIG ERROR - domain is not defined in hosts file"
-  when: not domain
