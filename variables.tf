@@ -12,7 +12,8 @@ variable "hcloud_token" { }
 
 # Set the variable value in *.tfvars file
 # or using -var="hcloud_token=..." CLI option
-#variable "mx_backup" { }
+variable "mx_backup" { }
+
 
 # Set the variable value in *.tfvars file
 # or using -var="digitalocean_token=..." CLI option

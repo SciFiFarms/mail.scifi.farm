@@ -9,15 +9,15 @@ resource "digitalocean_record" "mx" {
   value  = "@"
 }
 
-## Backup email server
-#resource "digitalocean_record" "mx_backup" {
-#  domain = "${var.domain}"
-#  type   = "MX"
-#  name   = "mail"
-#  priority = "20"
-#  ttl    = "120"
-#  value  = "${var.mx_backup}."
-#}
+# Backup email server
+resource "digitalocean_record" "mx_backup" {
+  domain = "${var.domain}"
+  type   = "MX"
+  name   = "@"
+  priority = "20"
+  ttl    = "120"
+  value  = "${var.mx_backup}."
+}
 
 resource "digitalocean_record" "mail" {
   domain = "${var.domain}"

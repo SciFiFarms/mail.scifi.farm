@@ -69,7 +69,7 @@ resource "hcloud_rdns" "mail" {
 module "mail-domains" {
   source = "./modules/mail-domains"
   domain = "${var.domain}"
-  #mx_backup = "${var.mx_backup}"
+  mx_backup = "${var.mx_backup}"
   ipv4_address = "${hcloud_server.mail.ipv4_address}"
 }
 
