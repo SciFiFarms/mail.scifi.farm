@@ -59,6 +59,12 @@ resource "hcloud_server" "mail" {
   }
 }
 
+resource "hcloud_rdns" "mail" {
+  server_id = "${hcloud_server.mail.id}"
+  ip_address = "${hcloud_server.mail.ipv4_address}"
+  dns_ptr = "mail.${var.domain}"
+}
+
 # TODO: Consider adding the needed DNS entries. 
 module "mail-domains" {
   source = "./modules/mail-domains"
@@ -91,6 +97,12 @@ resource "hcloud_server" "cloud" {
   provisioner "local-exec" {
     command = "ansible-playbook -u root -i '${self.ipv4_address},' --private-key ${var.ssh_key_private} -T 300 technocore.yml" 
   }
+}
+
+resource "hcloud_rdns" "master" {
+  server_id = "${hcloud_server.cloud.id}"
+  ip_address = "${hcloud_server.cloud.ipv4_address}"
+  dns_ptr = "cloud.${var.domain}"
 }
 
 module "cloud-domains" {
