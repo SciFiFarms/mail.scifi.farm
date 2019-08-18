@@ -14,6 +14,7 @@ variable "hcloud_token" { }
 # or using -var="hcloud_token=..." CLI option
 variable "mx_backup" { }
 
+variable "dkim" { }
 
 # Set the variable value in *.tfvars file
 # or using -var="digitalocean_token=..." CLI option

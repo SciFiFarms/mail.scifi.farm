@@ -67,13 +67,11 @@ resource "digitalocean_record" "spf" {
   value  = "v=spf1 include:mxlogin.com -all"
 }
 
-# Add a record to the domain
-# I don't think this is nessasary: https://mxroute.helpscoutdocs.com/article/23-how-do-i-use-dkim
-#resource "digitalocean_record" "dkim" {
-#  domain = "${var.domain}"
-#  type   = "CNAME"
-#  name   = "default._domainkey"
-#  //priority = "10"
-#  ttl    = "120"
-#  value  = "${mx_backup}"
-#}
+resource "digitalocean_record" "dkim" {
+  domain = "${var.domain}"
+  type   = "TXT"
+  name   = "default._domainkey"
+  ttl    = "120"
+  value  = "${var.dkim}"
+}
+

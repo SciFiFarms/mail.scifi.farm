@@ -70,6 +70,7 @@ module "mail-domains" {
   source = "./modules/mail-domains"
   domain = "${var.domain}"
   mx_backup = "${var.mx_backup}"
+  dkim = "${var.dkim}"
   ipv4_address = "${hcloud_server.mail.ipv4_address}"
 }
 
