@@ -1,12 +1,12 @@
+# All the records needed by Mailcow. 
 
-# Add a record to the domain
 resource "digitalocean_record" "mx" {
   domain = "${var.domain}"
   type   = "MX"
-  name   = "mail"
+  name   = "@"
   priority = "10"
   ttl    = "120"
-  value  = "@"
+  value  = "mail.${var.domain}."
 }
 
 # Backup email server
@@ -32,7 +32,7 @@ resource "digitalocean_record" "www" {
   type   = "CNAME"
   name   = "www.mail"
   ttl    = "120"
-  value  = "mail."
+  value  = "mail.${var.domain}."
 }
 
 resource "digitalocean_record" "autodiscover" {
@@ -40,7 +40,7 @@ resource "digitalocean_record" "autodiscover" {
   type   = "CNAME"
   name   = "autodiscover"
   ttl    = "120"
-  value  = "mail."
+  value  = "mail.${var.domain}."
 }
 
 resource "digitalocean_record" "autoconfig" {
@@ -48,7 +48,7 @@ resource "digitalocean_record" "autoconfig" {
   type   = "CNAME"
   name   = "autoconfig"
   ttl    = "120"
-  value  = "mail."
+  value  = "mail.${var.domain}."
 }
 
 resource "digitalocean_record" "dmarc" {
@@ -75,3 +75,123 @@ resource "digitalocean_record" "dkim" {
   value  = "${var.dkim}"
 }
 
+resource "digitalocean_record" "_imap-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_imap._tcp"
+  ttl    = "120"
+  port   = "143"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+
+resource "digitalocean_record" "_imaps-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_imaps._tcp"
+  ttl    = "120"
+  port   = "993"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+
+resource "digitalocean_record" "_pop3-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_pop3._tcp"
+  ttl    = "120"
+  port   = "110"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+
+resource "digitalocean_record" "_pop3s-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_pop3s._tcp"
+  ttl    = "120"
+  port   = "995"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+
+resource "digitalocean_record" "_submission-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_submission._tcp"
+  ttl    = "120"
+  port   = "587"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+resource "digitalocean_record" "_smtps-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_smtps._tcp"
+  ttl    = "120"
+  port   = "465"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+resource "digitalocean_record" "_sieve-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_sieve._tcp"
+  ttl    = "120"
+  port   = "4190"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+resource "digitalocean_record" "_autodiscover-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_autodiscover._tcp"
+  ttl    = "120"
+  port   = "443"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+resource "digitalocean_record" "_carddavs-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_carddavs._tcp"
+  ttl    = "120"
+  port   = "443"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+resource "digitalocean_record" "_caldavs-_tcp" {
+  domain = "${var.domain}"
+  type   = "SRV"
+  name   = "_caldavs._tcp"
+  ttl    = "120"
+  port   = "443"
+  priority = "1"
+  weight = "0"
+  value  = "mail.${var.domain}"
+}
+
+resource "digitalocean_record" "_carddavs-_tcp-txt" {
+  domain = "${var.domain}"
+  type   = "TXT"
+  name   = "_carddavs._tcp"
+  ttl    = "120"
+  value  = "path=/SOGo/dav/"
+}
+
+resource "digitalocean_record" "_caldavs-_tcp-txt" {
+  domain = "${var.domain}"
+  type   = "TXT"
+  name   = "_caldavs._tcp"
+  ttl    = "120"
+  value  = "path=/SOGo/dav/"
+}
