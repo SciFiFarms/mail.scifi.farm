@@ -43,8 +43,6 @@
   roles:
     - geerlingguy.docker
     - dev-sec.os-hardening
-    #- atosatto.docker-swarm
-    #- thomasjpfan.docker-swarm
     
   vars:
     sysctl_overwrite:
